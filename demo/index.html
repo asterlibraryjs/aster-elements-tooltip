@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aster-timeline</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div id="demo">
+        <div>click | top | center</div>
+        <div>mouseover | bottom | start</div>
+        <div>click | left | center</div>
+        <div>mouseenter | right | end</div>
+        <div>mouseover</div>
+    </div>
+    <aster-tooltip name="tooltip" default-position="bottom" default-align="center" distance="20"></aster-tooltip>
+
+    <script type="module">
+        import { html, Tooltip } from "../.bin/aster-tootip.js";
+
+        const tooltip = Tooltip.get("tooltip");
+
+        tooltip.toggleOn("#demo>:nth-child(1)", "click", "Hello koko", { position: "top", align: "center" });
+        tooltip.showOn("#demo>:nth-child(2)", "mouseenter", "Hello boop", { position: "bottom", align: "start" });
+        tooltip.toggleOn("#demo>:nth-child(3)", "click", "Hello moto", { position: "left", align: "center" });
+
+        tooltip.for("#demo>:nth-child(4)", "Hello gogo");
+
+        const content = html`<h5>Hello les namies</h5>
+                            <div>Voici un tooltip formaté!</div>`;
+
+        tooltip.showOn("#demo>:nth-child(5)", "mouseenter", _ => content, { cssClass: "aster-tooltip--warning" });
+    </script>
+</body>
+
+</html>
