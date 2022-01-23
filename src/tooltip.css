@@ -1,0 +1,14 @@
+:host {
+    --_aster-tooltip__distance: var(--aster-tooltip__distance, 5px);
+    display: none;
+    position: fixed;
+    box-sizing: border-box;
+    background-color: #6E6D6F;
+    border-radius: 5px;
+    padding: 5px 10px;
+
+}
+.container {
+    display: block;
+    box-sizing: border-box;
+}
