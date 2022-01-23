@@ -35,10 +35,10 @@ export class Tooltip extends LitElement {
 
     static get(name: string = "default"): Tooltip { return instances.get(name.toLowerCase()); }
 
-    @property({ type: String, attribute: "align" })
+    @property({ type: String, attribute: "default-align" })
     defaultAlign: TooltipAlign = "center";
 
-    @property({ type: String, attribute: "position" })
+    @property({ type: String, attribute: "default-position" })
     defaultPosition: TooltipPosition = "bottom";
 
     @property({ type: Number })
