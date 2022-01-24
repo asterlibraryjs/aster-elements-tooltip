@@ -28,11 +28,10 @@
         ],
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
-        "rootDir": ".",
+        "rootDir": "./src",
         "outDir": "lib"
     },
     "include": [
-        "./src/**/*.ts",
-        "./demo/**/*.ts"
+        "./src/**/*.ts"
     ]
 }
