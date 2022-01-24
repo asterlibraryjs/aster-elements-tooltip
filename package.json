@@ -2,13 +2,14 @@
   "name": "@aster-elements/tooltip",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "tsc",
-    "debug": "tsc --project tests/tsconfig.json  && rollup -c --config demo/rollup.config.ts && karma start karma.debug.js",
-    "test": "tsc --project tests/tsconfig.json  && rollup -c --config tests/rollup.config.ts && karma start",
-    "demo": "tsc --project demo/tsconfig.json && rollup -c --config demo/rollup.config.ts"
+    "debug": "tsc --project tests/tsconfig.json  && rollup -c tests/rollup.config.js && karma start karma.debug.js",
+    "test": "tsc --project tests/tsconfig.json  && rollup -c tests/rollup.config.js && karma start",
+    "demo": "tsc --project demo/tsconfig.json && rollup -c demo/rollup.config.js"
   },
   "author": "sebdoucet",
   "license": "ISC",

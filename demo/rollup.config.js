@@ -7,10 +7,10 @@ import pkg from "../package.json";
 
 export default [
     {
-        input: "../lib/demo/index.js",
+        input: ".bin/demo/demo/index.js",
         output: [
             {
-                file: "../.bin/aster-tootip.js",
+                file: ".bin/aster-tootip.js",
                 format: "esm",
                 compact: true,
                 sourcemap: true
@@ -24,7 +24,7 @@ export default [
             copy({
                 hook: "buildStart",
                 targets: [
-                    { src: "../src/**/*.css", dest: "../lib/src/" }
+                    { src: "src/**/*.css", dest: ".bin/demo/src/" }
                 ]
             })
         ],
