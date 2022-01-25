@@ -1,5 +1,4 @@
 import { assert } from "chai";
-import { assert as sassert, spy, stub } from "sinon";
 import { Tooltip } from "../src";
 
 describe("Tooltip", () => {
