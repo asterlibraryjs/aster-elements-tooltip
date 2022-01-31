@@ -29,7 +29,7 @@
         "skipDefaultLibCheck": true,
         "skipLibCheck": true,
         "rootDir": "./src",
-        "outDir": "lib"
+        "outDir": "lib/src"
     },
     "include": [
         "./src/**/*.ts"

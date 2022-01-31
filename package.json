@@ -1,14 +1,14 @@
 {
   "name": "@aster-elements/tooltip",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./lib/aster-tooltip.js",
+  "types": "./lib/src/index.d.ts",
   "scripts": {
     "prepublishOnly": "npm run build",
-    "build": "tsc && copyfiles -f ./src/*.css lib",
-    "debug": "tsc --project tests/tsconfig.json  && rollup -c tests/rollup.config.js && karma start karma.debug.js",
-    "test": "tsc --project tests/tsconfig.json  && rollup -c tests/rollup.config.js && karma start",
+    "build": "tsc && rollup -c",
+    "debug": "tsc --project tests/tsconfig.json && rollup -c tests/rollup.config.js && karma start karma.debug.js",
+    "test": "tsc --project tests/tsconfig.json && rollup -c tests/rollup.config.js && karma start",
     "demo": "tsc --project demo/tsconfig.json && rollup -c demo/rollup.config.js"
   },
   "author": "sebdoucet",
@@ -30,7 +30,6 @@
     "@types/mocha": "9.1.0",
     "@types/sinon": "10.0.8",
     "chai": "4.3.6",
-    "copyfiles": "^2.4.1",
     "karma": "^6.3.12",
     "karma-chai": "0.1.0",
     "karma-chrome-launcher": "3.1.0",
