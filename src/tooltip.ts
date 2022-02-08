@@ -28,12 +28,24 @@ export class Tooltip extends LitElement {
     private readonly _registered: IDisposable[] = [];
     private _debouncedTime: number = 0;
     private _content: unknown = nothing;
-    private _target?: HTMLElement;
-    private _options?: TooltipOpeningOptions;
+    private _target: HTMLElement | null = null;
+    private _options: TooltipOpeningOptions | null = null;
 
     static readonly styles = unsafeCSS(styles);
 
-    static get(name: string = "default"): Tooltip { return instances.get(name.toLowerCase()); }
+    static get(name?: string): Tooltip {
+        if (name) {
+            return instances.get(name.toLowerCase());
+        }
+
+        let defaultInstance = instances.get("default");
+        if (!defaultInstance) {
+            defaultInstance = document.createElement("aster-tooltip");
+            document.body.appendChild(defaultInstance);
+            instances.set("default", defaultInstance);
+        }
+        return defaultInstance;
+    }
 
     @property({ type: String, attribute: "default-align" })
     defaultAlign: TooltipAlign = "center";
@@ -68,7 +80,8 @@ export class Tooltip extends LitElement {
         instances.set(name, this);
 
         this._registered.push(
-            dom.on(document.body, "mousemove", this._onMouseMoveHandler as EventListener, { passive: true })
+            dom.on(document.body, "mousemove", this._onMouseMoveHandler as EventListener, { passive: true }),
+            dom.on(document.body, "wheel", () => this.hide(), { passive: true })
         );
     }
 
@@ -97,14 +110,13 @@ export class Tooltip extends LitElement {
         }
     }
 
-    for<TElement extends HTMLElement>(targetOrQuerySelector: TElement | TElement[] | string, contentPredicate: (target: TElement) => unknown, options?: TooltipOpeningOptions): void {
-        this.showOn(targetOrQuerySelector, "mouseenter", contentPredicate, options);
+    for<TElement extends HTMLElement>(targetOrQuerySelector: TElement | TElement[] | string, content: unknown, options?: TooltipOpeningOptions): void {
+        this.showOn(targetOrQuerySelector, "mouseenter", content, options);
     }
 
-    showOn<TElement extends HTMLElement>(targetOrQuerySelector: TElement | TElement[] | string, eventType: string, contentPredicate: (target: TElement) => unknown, options: TooltipOpeningOptions = {}): void {
+    showOn<TElement extends HTMLElement>(targetOrQuerySelector: TElement | TElement[] | string, eventType: string, content: unknown, options: TooltipOpeningOptions = {}): void {
         for (const target of this.getTargets(targetOrQuerySelector)) {
             const listener = () => {
-                const content = contentPredicate(target);
                 this.show(target, content, { autoHide: true, ...options });
             };
             this._registered.push(
@@ -113,14 +125,14 @@ export class Tooltip extends LitElement {
         }
     }
 
-    toggleOn<TElement extends HTMLElement>(targetOrQuerySelector: TElement | TElement[], eventType: string, contentPredicate: (target: TElement) => unknown, options: TooltipOpeningOptions = {}): void {
+    toggleOn<TElement extends HTMLElement>(targetOrQuerySelector: TElement | TElement[], eventType: string, content: unknown, options: TooltipOpeningOptions = {}): void {
         for (const target of this.getTargets(targetOrQuerySelector)) {
             const listener = () => {
                 if (this._target === target) {
                     this.hide(target);
                     return false;
                 }
-                const content = contentPredicate(target);
+
                 this.show(target, content, options);
                 return true;
             };
@@ -152,7 +164,7 @@ export class Tooltip extends LitElement {
         }
 
         this._target = target;
-        this._content = content;
+        this._content = this.resolveContent(target, content);
         this._options = options;
         this._debouncedTime = Date.now() + this.delay;
 
@@ -163,12 +175,12 @@ export class Tooltip extends LitElement {
         if (options.cssClass) {
             this.classList.add(options.cssClass);
         }
-        this.classList.add("aster-tooltip--visible");
         this.style.display = "block";
         render(this._content, this);
 
         const [top, left] = this.getPosition(target, options.position ?? this.defaultPosition, options.align ?? this.defaultAlign);
         Object.assign(this.style, { top, left });
+        this.classList.add("aster-tooltip--visible");
     }
 
     async toggle(target: HTMLElement | UIEvent, content: unknown, options?: TooltipOpeningOptions): Promise<boolean> {
@@ -178,6 +190,13 @@ export class Tooltip extends LitElement {
         }
         await this.show(target, content, options);
         return true;
+    }
+
+    private resolveContent(element: HTMLElement, content: unknown): unknown {
+        if (typeof content === "function") {
+            return content(element);
+        }
+        return content;
     }
 
     private getPosition(target: HTMLElement, position: TooltipPosition, align: TooltipAlign): [top: string, left: string] {
@@ -245,15 +264,15 @@ export class Tooltip extends LitElement {
     }
 
     hide(target?: HTMLElement): void {
-        if (!target || this._target === target) {
+        if (this._target && (!target || this._target === target)) {
             this.classList.remove("aster-tooltip--visible");
             if (this._options?.cssClass) {
                 this.classList.remove(this._options?.cssClass);
             }
             this.style.display = "none";
 
-            this._target = undefined;
-            this._options = undefined;
+            this._target = null;
+            this._options = null;
             this._content = nothing;
         }
     }

@@ -15,7 +15,7 @@ body {
 
 aster-tooltip {
     opacity: 0;
-    transition: opacity 500ms;
+    transition: opacity 500ms linear;
 }
 
 .aster-tooltip--warning {

@@ -17,23 +17,21 @@
         <div>mouseenter | right | end</div>
         <div>mouseover</div>
     </div>
-    <aster-tooltip name="tooltip" default-position="bottom" default-align="center" distance="20"></aster-tooltip>
+    <aster-tooltip name="warning" class="aster-tooltip--warning" default-position="top" default-align="center" distance="20"></aster-tooltip>
 
     <script type="module">
         import { html, Tooltip } from "../.bin/aster-tootip.js";
 
-        const tooltip = Tooltip.get("tooltip");
+        Tooltip.get().toggleOn("#demo>:nth-child(1)", "click", "Hello koko", { position: "top", align: "center" });
+        Tooltip.get().showOn("#demo>:nth-child(2)", "mouseenter", "Hello boop", { position: "bottom", align: "start" });
+        Tooltip.get().toggleOn("#demo>:nth-child(3)", "click", "Hello moto", { position: "left", align: "center" });
 
-        tooltip.toggleOn("#demo>:nth-child(1)", "click", "Hello koko", { position: "top", align: "center" });
-        tooltip.showOn("#demo>:nth-child(2)", "mouseenter", "Hello boop", { position: "bottom", align: "start" });
-        tooltip.toggleOn("#demo>:nth-child(3)", "click", "Hello moto", { position: "left", align: "center" });
-
-        tooltip.for("#demo>:nth-child(4)", "Hello gogo");
+        Tooltip.get().for("#demo>:nth-child(4)", "Hello gogo");
 
         const content = html`<h5>Hello les namies</h5>
                             <div>Voici un tooltip formaté!</div>`;
 
-        tooltip.showOn("#demo>:nth-child(5)", "mouseenter", _ => content, { cssClass: "aster-tooltip--warning" });
+        Tooltip.get("warning").showOn("#demo>:nth-child(5)", "mouseenter", _ => content);
     </script>
 </body>
 
