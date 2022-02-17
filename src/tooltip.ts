@@ -1,5 +1,5 @@
 import { IDisposable } from "@aster-js/core";
-import { AbortToken, Debouncer, TimeoutSource } from "@aster-js/async";
+import { Debouncer, TimeoutSource } from "@aster-js/async";
 import { dom } from "@aster-js/dom";
 import { LitElement, html, HTMLTemplateResult, unsafeCSS, nothing, render } from "lit";
 import { customElement, property } from "lit/decorators.js";
@@ -42,7 +42,6 @@ export class Tooltip extends LitElement {
         if (!defaultInstance) {
             defaultInstance = document.createElement("aster-tooltip");
             document.body.appendChild(defaultInstance);
-            instances.set("default", defaultInstance);
         }
         return defaultInstance;
     }
